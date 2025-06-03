@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import WelcomeScreen from './components/WelcomeScreen'
+import {WelcomeScreen} from './components/WelcomeScreen'
 import {GameplayScreen} from './components/GameplayScreen'
 import './App.css'
 
