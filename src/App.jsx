@@ -1,7 +1,10 @@
 import { useState, useEffect } from 'react'
+import WelcomeScreen from './components/WelcomeScreen'
 import './App.css'
 
+
 function App() {
+  const screen = "WELCOME";
   const [correctCount, setCorrectCount] = useState(0)
   const [incorrectCount, setIncorrectCount] = useState(0)
   const letters = 'АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ';
@@ -30,6 +33,9 @@ function App() {
 
   return (
     <>
+    {
+	screen === "WELCOME" && <WelcomeScreen />
+    }
     <div className="counter">
       <div>
         <div className='correct'>Правильно: {correctCount}</div>
