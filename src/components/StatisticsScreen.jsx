@@ -1,13 +1,14 @@
-import { getStatistic } from "../services/statistic-service";
+import { useState } from "react";
+import { clearStatistics, getStatistic } from "../services/statistic-service";
 
 export const StatisticsScreen = ({
     onScreenChange,
 }) => {
-    const statistic = getStatistic();
+    const [statistic, setStatistics] = useState(getStatistic());
 
     function formatDate(timestamp) {
         const date = new Date(timestamp);
-        return date.toLocaleString() ;
+        return date.toLocaleString();
     }
 
     return (<div className="statistics-screen">
@@ -30,6 +31,12 @@ export const StatisticsScreen = ({
                 </div>
             ))
         }
-        <button onClick={() => onScreenChange("WELCOME")}>На початок</button>
+        <div>
+            <button onClick={() => onScreenChange("WELCOME")}>На початок</button>
+            <button onClick={() => {
+                clearStatistics();
+                setStatistics([]);
+            }}>Очистити статистику</button>
+        </div>
     </div>);
 }
