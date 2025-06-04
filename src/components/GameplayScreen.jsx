@@ -21,30 +21,27 @@ export const GameplayScreen = (
         onScreenChange("STATISTICS");
     }
 
-    function checkAnswer(clickedLetterIndex) {
+    async function checkAnswer(clickedLetterIndex) {
         const datetime = getDateTime();
+        let newAnswers;
         if (clickedLetterIndex === 0 && selectedLettersIndexes[0] <= selectedLettersIndexes[1]) {
-            setAnswers([...answers, {
+            newAnswers = [...answers, {
                 correct: true,
                 datetime
-            }]);
+            }];
         } else if (clickedLetterIndex === 1 && selectedLettersIndexes[0] >= selectedLettersIndexes[1]) {
-            setAnswers([...answers, {
+            newAnswers = [...answers, {
                 correct: true,
                 datetime
-            }]);
+            }];
         } else {
-            setAnswers([...answers, {
+            newAnswers = [...answers, {
                 correct: false,
                 datetime
-            }]);
+            }];
         }
 
-        if (answers.length >= MAXTURNS - 1) {
-            endGame();
-        } else {
-            get2RandomLetters();
-        }
+        setAnswers(newAnswers);
     }
 
     function getCorrectCount() {
@@ -70,7 +67,15 @@ export const GameplayScreen = (
 
     useEffect(() => {
         get2RandomLetters()
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        if (answers.length >= MAXTURNS) {
+            endGame();
+        } else {
+            get2RandomLetters();
+        }
+    }, [answers]);
 
     return (
         <>
