@@ -28,6 +28,7 @@ export const StatisticsScreen = ({
                     <div className="statistics-list-item-cell average-response-time">
                         {item.averageResponseTime} c.
                     </div>
+
                 </div>
             ))
         }
