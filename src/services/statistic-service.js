@@ -3,6 +3,10 @@ export function getStatistic() {
     return statistic ? JSON.parse(statistic) : [];
 }
 
+export function clearStatistics() {
+    localStorage.setItem('statistic', JSON.stringify([]));
+}
+
 export function getDateTime() {
     return Date.now();
 }
