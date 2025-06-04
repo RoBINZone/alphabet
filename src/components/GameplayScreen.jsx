@@ -1,26 +1,71 @@
 import { useState, useEffect } from 'react'
+import { getDateTime, setStatistic } from '../services/statistic-service'
 
-export const GameplayScreen = () => {
-    const [correctCount, setCorrectCount] = useState(0)
-    const [incorrectCount, setIncorrectCount] = useState(0)
+export const GameplayScreen = (
+    {
+        startTime, onScreenChange
+    }) => {
+    const [answers, setAnswers] = useState([]);
     const letters = 'АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ';
     const [selectedLettersIndexes, setSelectedLettersIndexes] = useState([])
+    const MAXTURNS = 20;
 
     function get2RandomLetters() {
         const randomIndex = Math.floor(Math.random() * letters.length)
-        const randomIndex2 = (randomIndex + Math.floor(Math.random() * (letters.length - 1))) % letters.length
+        const randomIndex2 = (randomIndex + 1 + Math.floor(Math.random() * (letters.length - 2))) % letters.length
         setSelectedLettersIndexes([randomIndex, randomIndex2])
     }
 
+    function endGame() {
+        setStatistic(startTime, getCorrectCount(), getIncorrectCount(), getAverageResponseTime());
+        onScreenChange("STATISTICS");
+    }
+
     function checkAnswer(clickedLetterIndex) {
+        const datetime = getDateTime();
         if (clickedLetterIndex === 0 && selectedLettersIndexes[0] <= selectedLettersIndexes[1]) {
-            setCorrectCount(correctCount + 1)
+            setAnswers([...answers, {
+                correct: true,
+                datetime
+            }]);
         } else if (clickedLetterIndex === 1 && selectedLettersIndexes[0] >= selectedLettersIndexes[1]) {
-            setCorrectCount(correctCount + 1)
+            setAnswers([...answers, {
+                correct: true,
+                datetime
+            }]);
         } else {
-            setIncorrectCount(incorrectCount + 1)
+            setAnswers([...answers, {
+                correct: false,
+                datetime
+            }]);
         }
-        get2RandomLetters()
+
+        if (answers.length >= MAXTURNS) {
+            endGame();
+        } else {
+            get2RandomLetters();
+        }
+    }
+
+    function getCorrectCount() {
+        return answers?.filter(item => item.correct)?.length ?? 0;
+    }
+
+    function getIncorrectCount() {
+        return answers?.filter(item => !item.correct)?.length ?? 0;
+    }
+
+    function getAverageResponseTime() {
+        const diffs = [];
+        if (answers.length > 1) {
+            for (let i = 0; i < answers.length - 1; i++) {
+                diffs.push(answers[i].datetime - (i === 0 ? startTime : answers[i - 1].datetime))
+            }
+        }
+
+        const avg = diffs.length > 0 ? diffs.reduce((el, acc) => acc + el, 0) / diffs.length : 0;
+
+        return Math.floor(avg / 10) / 100;
     }
 
     useEffect(() => {
@@ -31,8 +76,9 @@ export const GameplayScreen = () => {
         <>
             <div className="counter">
                 <div>
-                    <div className='correct'>Правильно: {correctCount}</div>
-                    <div className='incorrect'>Неправильно: {incorrectCount}</div>
+                    <div className='correct'>Правильно: {getCorrectCount()}</div>
+                    <div className='incorrect'>Неправильно: {getIncorrectCount()}</div>
+                    <div className='average-response-time'>Середній час відповіді: {getAverageResponseTime()}c</div>
                 </div>
             </div>
             <div>Яка з цих літер іде першою в алфавіті?</div>
