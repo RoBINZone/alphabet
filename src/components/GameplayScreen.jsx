@@ -40,7 +40,7 @@ export const GameplayScreen = (
             }]);
         }
 
-        if (answers.length >= MAXTURNS) {
+        if (answers.length >= MAXTURNS - 1) {
             endGame();
         } else {
             get2RandomLetters();
