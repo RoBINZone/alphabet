@@ -96,3 +96,39 @@ button:focus-visible {
     color: red;
   }
 }
+
+.statistics-screen {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  .statistics-list-item {
+    display: flex;
+    flex-direction: row;
+    gap: 2px;
+    justify-content: center;
+    .statistics-list-item-cell {
+      border-radius: 4px;
+      padding: 2px 10px;
+      min-width: 35px;
+
+      &.datetime {
+        min-width: 200px;
+      }
+      &.correct {
+        color: white;
+        background-color: green;
+      }
+      &.incorrect {
+        color: white;
+        background-color: red;
+      }
+      &.average-response-time {
+        color: rgb(38, 38, 38);
+        font-weight: bold;
+        background-color: rgb(219, 219, 219);
+        min-width: 50px;
+      }
+    }
+  }
+}
