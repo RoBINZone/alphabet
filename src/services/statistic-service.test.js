@@ -1,4 +1,8 @@
-import { getStatistic, setStatistic, getDateTime } from "./statistic-service";
+import {
+  getStatistic,
+  setStatistic,
+  getDateTime
+} from "./statistic-service";
 
 import { expect, beforeEach, vi, describe, it } from "vitest";
 
