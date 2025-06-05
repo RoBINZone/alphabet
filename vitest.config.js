@@ -1,8 +1,9 @@
 // vite.config.js
-import { defineConfig } from "vite";
+import { defineConfig, configDefaults } from "vitest/config";
 
 export default defineConfig({
   test: {
+    exclude: [...configDefaults.exclude, "**/docs/assets/**"],
     globals: true, // If you want Jest-like globals (describe, test, expect)
     environment: "jsdom", // For testing DOM environments (e.g., React components)
   },
