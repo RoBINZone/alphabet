@@ -1,11 +1,13 @@
 import React from "react";
+
 import { render } from "@testing-library/react";
 import { expect, it, describe } from "vitest";
-import App from "./App";
 
-describe("App", () => {
+import { GameplayScreen } from "./GameplayScreen";
+
+describe("Gameplay", () => {
   it("should match snapshot", () => {
-    const { asFragment } = render(<App />);
+    const { asFragment } = render(<GameplayScreen />);
     expect(asFragment()).toMatchSnapshot();
   });
 });

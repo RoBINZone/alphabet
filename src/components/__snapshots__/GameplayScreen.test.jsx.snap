@@ -1,0 +1,44 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Gameplay > should match snapshot 1`] = `
+<DocumentFragment>
+  <div
+    class="counter"
+  >
+    <div>
+      <div
+        class="correct"
+      >
+        Правильно: 0
+      </div>
+      <div
+        class="incorrect"
+      >
+        Неправильно: 0
+      </div>
+      <div
+        class="average-response-time"
+      >
+        Середній час відповіді: 0c
+      </div>
+    </div>
+  </div>
+  <div>
+    Яка з цих літер іде першою в алфавіті?
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="letter"
+    >
+      Л
+    </div>
+    <div
+      class="letter"
+    >
+      Ж
+    </div>
+  </div>
+</DocumentFragment>
+`;

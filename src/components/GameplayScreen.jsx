@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { getDateTime, setStatistic } from "../services/statistic-service";
 
 export const GameplayScreen = ({ startTime, onScreenChange }) => {
