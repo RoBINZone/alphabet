@@ -25,28 +25,43 @@ export const GameplayScreen = ({ startTime, onScreenChange }) => {
     onScreenChange("STATISTICS");
   }
 
-    async function checkAnswer(clickedLetterIndex) {
-        const datetime = getDateTime();
-        let newAnswers;
-        if (clickedLetterIndex === 0 && selectedLettersIndexes[0] <= selectedLettersIndexes[1]) {
-            newAnswers = [...answers, {
-                correct: true,
-                datetime
-            }];
-        } else if (clickedLetterIndex === 1 && selectedLettersIndexes[0] >= selectedLettersIndexes[1]) {
-            newAnswers = [...answers, {
-                correct: true,
-                datetime
-            }];
-        } else {
-            newAnswers = [...answers, {
-                correct: false,
-                datetime
-            }];
-        }
-
-        setAnswers(newAnswers);
+  async function checkAnswer(clickedLetterIndex) {
+    const datetime = getDateTime();
+    let newAnswers;
+    if (
+      clickedLetterIndex === 0 &&
+      selectedLettersIndexes[0] <= selectedLettersIndexes[1]
+    ) {
+      newAnswers = [
+        ...answers,
+        {
+          correct: true,
+          datetime,
+        },
+      ];
+    } else if (
+      clickedLetterIndex === 1 &&
+      selectedLettersIndexes[0] >= selectedLettersIndexes[1]
+    ) {
+      newAnswers = [
+        ...answers,
+        {
+          correct: true,
+          datetime,
+        },
+      ];
+    } else {
+      newAnswers = [
+        ...answers,
+        {
+          correct: false,
+          datetime,
+        },
+      ];
     }
+
+    setAnswers(newAnswers);
+  }
 
   function getCorrectCount() {
     return answers?.filter((item) => item.correct)?.length ?? 0;
@@ -74,17 +89,17 @@ export const GameplayScreen = ({ startTime, onScreenChange }) => {
     return Math.floor(avg / 10) / 100;
   }
 
-    useEffect(() => {
-        get2RandomLetters()
-    }, []);
+  useEffect(() => {
+    get2RandomLetters();
+  }, []);
 
-    useEffect(() => {
-        if (answers.length >= MAXTURNS) {
-            endGame();
-        } else {
-            get2RandomLetters();
-        }
-    }, [answers]);
+  useEffect(() => {
+    if (answers.length >= MAXTURNS) {
+      endGame();
+    } else {
+      get2RandomLetters();
+    }
+  }, [answers]);
 
   return (
     <>

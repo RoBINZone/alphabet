@@ -4,7 +4,7 @@ export function getStatistic() {
 }
 
 export function clearStatistics() {
-    localStorage.setItem('statistic', JSON.stringify([]));
+  localStorage.setItem("statistic", JSON.stringify([]));
 }
 
 export function getDateTime() {
