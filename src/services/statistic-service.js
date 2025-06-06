@@ -11,6 +11,10 @@ export function clearStatistics() {
     localStorage.setItem('statistic', JSON.stringify([]));
 }
 
+export function clearStatistics() {
+    localStorage.setItem('statistic', JSON.stringify([]));
+}
+
 export function getDateTime() {
   return Date.now();
 }
