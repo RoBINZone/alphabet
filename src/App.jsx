@@ -36,27 +36,21 @@ function App() {
     });
     dispatch({
       type: SET_SCREEN,
-      screen,
+      screen: GAMEPLAY_SCREEN,
     });
   };
 
-  return (
-    <>
-      {gameState.screen === WELCOME_SCREEN && (
-        <WelcomeScreen onStart={onStart} />
-      )}
-      {gameState.screen === GAMEPLAY_SCREEN && (
-        <GameplayScreen
-          gameState={gameState}
-          onScreenChange={setScreen}
-          dispatch={dispatch()}
-        />
-      )}
-      {gameState.screen === STATISTICS_SCREEN && (
-        <StatisticsScreen onScreenChange={setScreen} />
-      )}
-    </>
-  );
+  const screens = {
+    [WELCOME_SCREEN]: () => <WelcomeScreen onStart={onStart} />,
+    [GAMEPLAY_SCREEN]: () => <GameplayScreen
+      gameState={gameState}
+      onScreenChange={setScreen}
+      dispatch={dispatch}
+    />,
+    [STATISTICS_SCREEN]: () => <StatisticsScreen onScreenChange={setScreen} />
+  }
+
+  return (screens[gameState.screen] && screens[gameState.screen]()) ?? null;
 }
 
 export default App;
