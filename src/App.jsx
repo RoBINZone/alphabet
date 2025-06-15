@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from "react";
+import React, { useReducer } from "react";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import { GameplayScreen } from "./components/GameplayScreen";
 import "./App.css";
@@ -16,7 +16,6 @@ import { StatisticsService } from "./services/statistics-service.js";
 import { GameplayService } from "./services/gameplay-service.js";
 
 function App() {
-  const [startTime, setStartTime] = useState(null);
   const [gameState, dispatch] = useReducer(reducer, initialState);
 
   const setScreen = (screen) => {

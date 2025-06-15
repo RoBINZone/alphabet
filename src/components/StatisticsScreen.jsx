@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { StatisticsService } from "../services/statistics-service.js";
 import { WELCOME_SCREEN } from "../consts.js";
 

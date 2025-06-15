@@ -1,0 +1,14 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Welcome Screen > should match snapshot 1`] = `
+<DocumentFragment>
+  <div>
+    <p>
+      Вітаємо в грі "Алфавіт". Правила прості: вибирайте з двох літер ту, що йде першою в алфавіті.
+    </p>
+    <button>
+      Почати гру
+    </button>
+  </div>
+</DocumentFragment>
+`;
