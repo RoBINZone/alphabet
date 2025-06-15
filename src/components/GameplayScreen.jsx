@@ -1,82 +1,64 @@
-import React, { useState, useEffect } from "react";
-import { getDateTime, setStatistic } from "../services/statistic-service";
+import React, { useEffect } from "react";
+import { StatisticsService } from "../services/statistics-service.js";
+import {
+  LETTERS,
+  MAXTURNS,
+  SET_ANSWERS,
+  SET_SCREEN,
+  SET_SELECTED_LETTERS_INDEXES,
+  STATISTICS_SCREEN,
+} from "../consts.js";
+import { GameplayService } from "../services/gameplay-service.js";
 
-export const GameplayScreen = ({ startTime, onScreenChange }) => {
-  const [answers, setAnswers] = useState([]);
-  const letters = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
-  const [selectedLettersIndexes, setSelectedLettersIndexes] = useState([]);
-  const MAXTURNS = 20;
-
-  function get2RandomLetters() {
-    const randomIndex = Math.floor(Math.random() * letters.length);
-    const randomIndex2 =
-      (randomIndex + 1 + Math.floor(Math.random() * (letters.length - 2))) %
-      letters.length;
-    setSelectedLettersIndexes([randomIndex, randomIndex2]);
-  }
-
+export const GameplayScreen = ({ gameState, dispatch }) => {
   function endGame() {
-    setStatistic(
-      startTime,
+    StatisticsService.setStatistic(
+      gameState.startTime,
       getCorrectCount(),
       getIncorrectCount(),
       getAverageResponseTime(),
     );
-    onScreenChange("STATISTICS");
+    dispatch({ type: SET_SCREEN, screen: STATISTICS_SCREEN });
   }
 
-  async function checkAnswer(clickedLetterIndex) {
-    const datetime = getDateTime();
-    let newAnswers;
-    if (
-      clickedLetterIndex === 0 &&
-      selectedLettersIndexes[0] <= selectedLettersIndexes[1]
-    ) {
-      newAnswers = [
-        ...answers,
-        {
-          correct: true,
-          datetime,
-        },
-      ];
-    } else if (
-      clickedLetterIndex === 1 &&
-      selectedLettersIndexes[0] >= selectedLettersIndexes[1]
-    ) {
-      newAnswers = [
-        ...answers,
-        {
-          correct: true,
-          datetime,
-        },
-      ];
-    } else {
-      newAnswers = [
-        ...answers,
-        {
-          correct: false,
-          datetime,
-        },
-      ];
-    }
+  function setAnswers(answers) {
+    dispatch({
+      type: SET_ANSWERS,
+      answers,
+    });
+  }
 
-    setAnswers(newAnswers);
+  function checkAnswer(clickedLetterIndex) {
+    setAnswers([
+      ...gameState.answers,
+      {
+        correct: GameplayService.checkAnswer(
+          clickedLetterIndex,
+          gameState.selectedLettersIndexes[0],
+          gameState.selectedLettersIndexes[1],
+        ),
+        datetime: StatisticsService.getDateTime(),
+      },
+    ]);
   }
 
   function getCorrectCount() {
-    return answers?.filter((item) => item.correct)?.length ?? 0;
+    return gameState?.answers?.filter((item) => item.correct)?.length ?? 0;
   }
 
   function getIncorrectCount() {
-    return answers?.filter((item) => !item.correct)?.length ?? 0;
+    return gameState?.answers?.filter((item) => !item.correct)?.length ?? 0;
   }
 
   function getAverageResponseTime() {
     const diffs = [];
-    if (answers.length > 1) {
-      for (let i = 0; i < answers.length - 1; i++) {
+    if (gameState?.answers.length > 1) {
+      for (let i = 0; i < gameState?.answers.length - 1; i++) {
         diffs.push(
-          answers[i].datetime - (i === 0 ? startTime : answers[i - 1].datetime),
+          gameState?.answers[i].datetime -
+            (i === 0
+              ? gameState.startTime
+              : gameState?.answers[i - 1].datetime),
         );
       }
     }
@@ -90,16 +72,22 @@ export const GameplayScreen = ({ startTime, onScreenChange }) => {
   }
 
   useEffect(() => {
-    get2RandomLetters();
+    dispatch({
+      type: SET_SELECTED_LETTERS_INDEXES,
+      selectedLettersIndexes: GameplayService.get2RandomLetters(),
+    });
   }, []);
 
   useEffect(() => {
-    if (answers.length >= MAXTURNS) {
+    if (gameState?.answers.length >= MAXTURNS) {
       endGame();
     } else {
-      get2RandomLetters();
+      dispatch({
+        type: SET_SELECTED_LETTERS_INDEXES,
+        selectedLettersIndexes: GameplayService.get2RandomLetters(),
+      });
     }
-  }, [answers]);
+  }, [gameState?.answers]);
 
   return (
     <>
@@ -115,10 +103,10 @@ export const GameplayScreen = ({ startTime, onScreenChange }) => {
       <div>Яка з цих літер іде першою в алфавіті?</div>
       <div className="container">
         <div className="letter" onClick={() => checkAnswer(0)}>
-          {letters[selectedLettersIndexes[0]]}
+          {LETTERS[gameState.selectedLettersIndexes[0]]}
         </div>
         <div className="letter" onClick={() => checkAnswer(1)}>
-          {letters[selectedLettersIndexes[1]]}
+          {LETTERS[gameState.selectedLettersIndexes[1]]}
         </div>
       </div>
     </>

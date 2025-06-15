@@ -1,8 +1,11 @@
-import { useState } from "react";
-import { clearStatistics, getStatistic } from "../services/statistic-service";
+import React, { useState } from "react";
+import { StatisticsService } from "../services/statistics-service.js";
+import { SET_SCREEN, WELCOME_SCREEN } from "../consts.js";
 
-export const StatisticsScreen = ({ onScreenChange }) => {
-  const [statistic, setStatistics] = useState(getStatistic());
+export const StatisticsScreen = ({ dispatch }) => {
+  const [statistics, setStatistics] = useState(
+    StatisticsService.getStatistic(),
+  );
 
   function formatDate(timestamp) {
     const date = new Date(timestamp);
@@ -12,8 +15,8 @@ export const StatisticsScreen = ({ onScreenChange }) => {
   return (
     <div className="statistics-screen">
       <div> дата / правильно / неправильно / середній час відповіді</div>
-      {statistic &&
-        statistic.reverse().map((item, index) => (
+      {statistics &&
+        statistics.reverse().map((item, index) => (
           <div className="statistics-list-item" key={index}>
             <div className="statistics-list-item-cell datetime">
               {formatDate(item.datetime)}
@@ -30,10 +33,14 @@ export const StatisticsScreen = ({ onScreenChange }) => {
           </div>
         ))}
       <div>
-        <button onClick={() => onScreenChange("WELCOME")}>На початок</button>
+        <button
+          onClick={() => dispatch({ type: SET_SCREEN, screen: WELCOME_SCREEN })}
+        >
+          На початок
+        </button>
         <button
           onClick={() => {
-            clearStatistics();
+            StatisticsService.clearStatistics();
             setStatistics([]);
           }}
         >

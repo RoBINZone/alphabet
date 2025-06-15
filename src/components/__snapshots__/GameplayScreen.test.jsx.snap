@@ -31,14 +31,10 @@ exports[`Gameplay > should match snapshot 1`] = `
   >
     <div
       class="letter"
-    >
-      Л
-    </div>
+    />
     <div
       class="letter"
-    >
-      Ж
-    </div>
+    />
   </div>
 </DocumentFragment>
 `;
