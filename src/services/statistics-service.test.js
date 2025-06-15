@@ -21,4 +21,9 @@ describe("Statistics Service", () => {
     StatisticsService.clearStatistics();
     expect(JSON.parse(localStorage.getItem("statistic"))).toEqual([]);
   });
+  it("test formatDate", () => {
+    expect(StatisticsService.formatDate(new Date(DATE))).toBe(
+      "2/24/2022, 7:00:00 AM",
+    );
+  });
 });

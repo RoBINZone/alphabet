@@ -38,3 +38,46 @@ exports[`Gameplay > should match snapshot 1`] = `
   </div>
 </DocumentFragment>
 `;
+
+exports[`Gameplay > should match snapshot many answers 1`] = `
+<DocumentFragment>
+  <div
+    class="counter"
+  >
+    <div>
+      <div
+        class="correct"
+      >
+        Правильно: 6
+      </div>
+      <div
+        class="incorrect"
+      >
+        Неправильно: 3
+      </div>
+      <div
+        class="average-response-time"
+      >
+        Середній час відповіді: 0.43c
+      </div>
+    </div>
+  </div>
+  <div>
+    Яка з цих літер іде першою в алфавіті?
+  </div>
+  <div
+    class="container"
+  >
+    <div
+      class="letter"
+    >
+      М
+    </div>
+    <div
+      class="letter"
+    >
+      Й
+    </div>
+  </div>
+</DocumentFragment>
+`;

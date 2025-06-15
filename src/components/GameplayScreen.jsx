@@ -3,84 +3,31 @@ import { StatisticsService } from "../services/statistics-service.js";
 import {
   LETTERS,
   MAXTURNS,
-  SET_ANSWERS,
   SET_SCREEN,
   SET_SELECTED_LETTERS_INDEXES,
   STATISTICS_SCREEN,
 } from "../consts.js";
 import { GameplayService } from "../services/gameplay-service.js";
+import { GameSelectors } from "../selectors/game-selectors.js";
+import { GameActions } from "../actions/game-actions.js";
 
 export const GameplayScreen = ({ gameState, dispatch }) => {
-  function endGame() {
-    StatisticsService.setStatistic(
-      gameState.startTime,
-      getCorrectCount(),
-      getIncorrectCount(),
-      getAverageResponseTime(),
-    );
-    dispatch({ type: SET_SCREEN, screen: STATISTICS_SCREEN });
-  }
-
-  function setAnswers(answers) {
-    dispatch({
-      type: SET_ANSWERS,
-      answers,
-    });
-  }
-
-  function checkAnswer(clickedLetterIndex) {
-    setAnswers([
-      ...gameState.answers,
-      {
-        correct: GameplayService.checkAnswer(
-          clickedLetterIndex,
-          gameState.selectedLettersIndexes[0],
-          gameState.selectedLettersIndexes[1],
-        ),
-        datetime: StatisticsService.getDateTime(),
-      },
-    ]);
-  }
-
-  function getCorrectCount() {
-    return gameState?.answers?.filter((item) => item.correct)?.length ?? 0;
-  }
-
-  function getIncorrectCount() {
-    return gameState?.answers?.filter((item) => !item.correct)?.length ?? 0;
-  }
-
-  function getAverageResponseTime() {
-    const diffs = [];
-    if (gameState?.answers.length > 1) {
-      for (let i = 0; i < gameState?.answers.length - 1; i++) {
-        diffs.push(
-          gameState?.answers[i].datetime -
-            (i === 0
-              ? gameState.startTime
-              : gameState?.answers[i - 1].datetime),
-        );
-      }
-    }
-
-    const avg =
-      diffs.length > 0
-        ? diffs.reduce((el, acc) => acc + el, 0) / diffs.length
-        : 0;
-
-    return Math.floor(avg / 10) / 100;
-  }
-
   useEffect(() => {
     dispatch({
       type: SET_SELECTED_LETTERS_INDEXES,
       selectedLettersIndexes: GameplayService.get2RandomLetters(),
     });
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (gameState?.answers.length >= MAXTURNS) {
-      endGame();
+      StatisticsService.setStatistic(
+        gameState.startTime,
+        GameSelectors.getCorrectCount(gameState),
+        GameSelectors.getIncorrectCount(gameState),
+        GameSelectors.getAverageResponseTime(gameState),
+      );
+      dispatch({ type: SET_SCREEN, screen: STATISTICS_SCREEN });
     } else {
       dispatch({
         type: SET_SELECTED_LETTERS_INDEXES,
@@ -93,19 +40,30 @@ export const GameplayScreen = ({ gameState, dispatch }) => {
     <>
       <div className="counter">
         <div>
-          <div className="correct">Правильно: {getCorrectCount()}</div>
-          <div className="incorrect">Неправильно: {getIncorrectCount()}</div>
+          <div className="correct">
+            Правильно: {GameSelectors.getCorrectCount(gameState)}
+          </div>
+          <div className="incorrect">
+            Неправильно: {GameSelectors.getIncorrectCount(gameState)}
+          </div>
           <div className="average-response-time">
-            Середній час відповіді: {getAverageResponseTime()}c
+            Середній час відповіді:{" "}
+            {GameSelectors.getAverageResponseTime(gameState)}c
           </div>
         </div>
       </div>
       <div>Яка з цих літер іде першою в алфавіті?</div>
       <div className="container">
-        <div className="letter" onClick={() => checkAnswer(0)}>
+        <div
+          className="letter"
+          onClick={() => dispatch(GameActions.addAnswer(gameState, 0))}
+        >
           {LETTERS[gameState.selectedLettersIndexes[0]]}
         </div>
-        <div className="letter" onClick={() => checkAnswer(1)}>
+        <div
+          className="letter"
+          onClick={() => dispatch(GameActions.addAnswer(gameState, 1))}
+        >
           {LETTERS[gameState.selectedLettersIndexes[1]]}
         </div>
       </div>

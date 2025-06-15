@@ -5,12 +5,13 @@ import "./App.css";
 import { StatisticsScreen } from "./components/StatisticsScreen";
 import { initialState, reducer } from "./reducers/game-reducer.js";
 import {
+  CLEAR_GAME,
   GAMEPLAY_SCREEN,
   SET_SCREEN,
   SET_SELECTED_LETTERS_INDEXES,
   SET_START_TIME,
   STATISTICS_SCREEN,
-  WELCOME_SCREEN,
+  WELCOME_SCREEN
 } from "./consts.js";
 import { StatisticsService } from "./services/statistics-service.js";
 import { GameplayService } from "./services/gameplay-service.js";
@@ -34,7 +35,7 @@ function App() {
   };
 
   const screens = {
-    [WELCOME_SCREEN]: () => <WelcomeScreen onStart={onStart} />,
+    [WELCOME_SCREEN]: () => <WelcomeScreen onStart={onStart} dispatch={dispatch} />,
     [GAMEPLAY_SCREEN]: () => (
       <GameplayScreen gameState={gameState} dispatch={dispatch} />
     ),

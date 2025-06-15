@@ -7,11 +7,6 @@ export const StatisticsScreen = ({ dispatch }) => {
     StatisticsService.getStatistic(),
   );
 
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  }
-
   return (
     <div className="statistics-screen">
       <div> дата / правильно / неправильно / середній час відповіді</div>
@@ -19,7 +14,7 @@ export const StatisticsScreen = ({ dispatch }) => {
         statistics.reverse().map((item, index) => (
           <div className="statistics-list-item" key={index}>
             <div className="statistics-list-item-cell datetime">
-              {formatDate(item.datetime)}
+              {StatisticsService.formatDate(item.datetime)}
             </div>
             <div className="statistics-list-item-cell correct">
               {item.correct}

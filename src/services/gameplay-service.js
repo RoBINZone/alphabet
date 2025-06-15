@@ -1,4 +1,5 @@
 import { LETTERS } from "../consts.js";
+import { StatisticsService } from "./statistics-service.js";
 
 function get2RandomLetters() {
   const randomIndex = Math.floor(Math.random() * LETTERS.length);
@@ -15,7 +16,19 @@ function checkAnswer(index, letter1Index, letter2Index) {
   );
 }
 
+function prepareAnswer(gameState, clickedLetterIndex) {
+  return {
+    correct: GameplayService.checkAnswer(
+      clickedLetterIndex,
+      gameState.selectedLettersIndexes[0],
+      gameState.selectedLettersIndexes[1],
+    ),
+    datetime: StatisticsService.getDateTime(),
+  };
+}
+
 export const GameplayService = {
   get2RandomLetters,
   checkAnswer,
+  prepareAnswer,
 };

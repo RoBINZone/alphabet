@@ -11,6 +11,11 @@ function getDateTime() {
   return Date.now();
 }
 
+function formatDate(timestamp) {
+  const date = new Date(timestamp);
+  return date.toLocaleString();
+}
+
 function setStatistic(datetime, correct, incorrect, averageResponseTime) {
   const statistic = getStatistic();
   statistic.push({ datetime, correct, incorrect, averageResponseTime });
@@ -22,4 +27,5 @@ export const StatisticsService = {
   clearStatistics,
   setStatistic,
   getDateTime,
+  formatDate,
 };

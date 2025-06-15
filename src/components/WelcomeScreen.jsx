@@ -1,6 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { GameActions } from "../actions/game-actions.js";
 
-export const WelcomeScreen = ({ onStart }) => {
+export const WelcomeScreen = ({ onStart, dispatch }) => {
+  useEffect(() => {
+    dispatch(GameActions.clearGame());
+  }, [dispatch]);
   return (
     <div>
       <p>
