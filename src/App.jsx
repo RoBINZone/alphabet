@@ -18,13 +18,6 @@ import { GameplayService } from "./services/gameplay-service.js";
 function App() {
   const [gameState, dispatch] = useReducer(reducer, initialState);
 
-  const setScreen = (screen) => {
-    dispatch({
-      type: SET_SCREEN,
-      screen,
-    });
-  };
-
   const onStart = () => {
     dispatch({
       type: SET_START_TIME,
@@ -42,13 +35,11 @@ function App() {
 
   const screens = {
     [WELCOME_SCREEN]: () => <WelcomeScreen onStart={onStart} />,
-    [GAMEPLAY_SCREEN]: () => <GameplayScreen
-      gameState={gameState}
-      onScreenChange={setScreen}
-      dispatch={dispatch}
-    />,
-    [STATISTICS_SCREEN]: () => <StatisticsScreen onScreenChange={setScreen} />
-  }
+    [GAMEPLAY_SCREEN]: () => (
+      <GameplayScreen gameState={gameState} dispatch={dispatch} />
+    ),
+    [STATISTICS_SCREEN]: () => <StatisticsScreen dispatch={dispatch} />,
+  };
 
   return (screens[gameState.screen] && screens[gameState.screen]()) ?? null;
 }

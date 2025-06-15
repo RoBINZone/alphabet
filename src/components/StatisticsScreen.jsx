@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StatisticsService } from "../services/statistics-service.js";
-import { WELCOME_SCREEN } from "../consts.js";
+import { SET_SCREEN, WELCOME_SCREEN } from "../consts.js";
 
-export const StatisticsScreen = ({ onScreenChange }) => {
+export const StatisticsScreen = ({ dispatch }) => {
   const [statistics, setStatistics] = useState(
     StatisticsService.getStatistic(),
   );
@@ -33,7 +33,9 @@ export const StatisticsScreen = ({ onScreenChange }) => {
           </div>
         ))}
       <div>
-        <button onClick={() => onScreenChange(WELCOME_SCREEN)}>
+        <button
+          onClick={() => dispatch({ type: SET_SCREEN, screen: WELCOME_SCREEN })}
+        >
           На початок
         </button>
         <button

@@ -4,12 +4,13 @@ import {
   LETTERS,
   MAXTURNS,
   SET_ANSWERS,
+  SET_SCREEN,
   SET_SELECTED_LETTERS_INDEXES,
   STATISTICS_SCREEN,
 } from "../consts.js";
 import { GameplayService } from "../services/gameplay-service.js";
 
-export const GameplayScreen = ({ gameState, onScreenChange, dispatch }) => {
+export const GameplayScreen = ({ gameState, dispatch }) => {
   function endGame() {
     StatisticsService.setStatistic(
       gameState.startTime,
@@ -17,7 +18,7 @@ export const GameplayScreen = ({ gameState, onScreenChange, dispatch }) => {
       getIncorrectCount(),
       getAverageResponseTime(),
     );
-    onScreenChange(STATISTICS_SCREEN);
+    dispatch({ type: SET_SCREEN, screen: STATISTICS_SCREEN });
   }
 
   function setAnswers(answers) {
