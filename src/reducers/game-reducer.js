@@ -25,6 +25,7 @@ export const reducer = (state, action) => {
       };
     case SET_START_TIME:
       return {
+        ...state,
         startTime: action.startTime,
       };
     default:

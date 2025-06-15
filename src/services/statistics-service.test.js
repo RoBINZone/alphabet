@@ -5,6 +5,7 @@ import { expect, beforeEach, vi, describe, it } from "vitest";
 describe("Statistics Service", () => {
   const DATE = "2022-02-24T05:00:00.000Z";
   beforeEach(() => {
+    localStorage.clear();
     vi.useFakeTimers();
     vi.setSystemTime(DATE);
   });
@@ -15,5 +16,9 @@ describe("Statistics Service", () => {
   });
   it("test getDateTime", () => {
     expect(new Date(StatisticsService.getDateTime()).toISOString()).toBe(DATE);
+  });
+  it("test clearStatistics", () => {
+    StatisticsService.clearStatistics();
+    expect(JSON.parse(localStorage.getItem("statistic"))).toEqual([]);
   });
 });

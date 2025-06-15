@@ -6,6 +6,7 @@ export default defineConfig({
     exclude: [...configDefaults.exclude, "docs/assets/**"],
     globals: true, // If you want Jest-like globals (describe, test, expect)
     environment: "jsdom", // For testing DOM environments (e.g., React components)
+    setupFiles: ["vitest-localstorage-mock"],
     coverage: {
       exclude: [
         "docs/assets/**",
