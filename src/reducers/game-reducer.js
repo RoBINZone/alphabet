@@ -1,10 +1,11 @@
 import {
-  ADD_ANSWER, CLEAR_GAME,
+  ADD_ANSWER,
+  CLEAR_GAME,
   SET_ANSWERS,
   SET_SCREEN,
   SET_SELECTED_LETTERS_INDEXES,
   SET_START_TIME,
-  WELCOME_SCREEN
+  WELCOME_SCREEN,
 } from "../consts.js";
 
 export const reducer = (state, action) => {

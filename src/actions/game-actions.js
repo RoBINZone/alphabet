@@ -3,8 +3,8 @@ import { GameplayService } from "../services/gameplay-service.js";
 
 function clearGame() {
   return {
-    type: CLEAR_GAME
-  }
+    type: CLEAR_GAME,
+  };
 }
 
 function addAnswer(gameState, clickedLetterIndex) {
