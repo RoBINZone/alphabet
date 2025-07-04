@@ -2,7 +2,8 @@ import { describe, expect, it } from "vitest";
 import { GameSelectors } from "./game-selectors.js";
 
 describe("Game Selector Tests", () => {
-  const answers = [
+const startTime =1750008619500;   
+const answers = [
     {
       correct: false,
       datetime: 1750008619518,
@@ -63,5 +64,9 @@ describe("Game Selector Tests", () => {
 
   it("should get incorrect answer count", () => {
     expect(GameSelectors.getIncorrectCount({ answers })).toEqual(9);
+  });
+
+  it("should get average response time", () => {
+    expect(GameSelectors.getAverageResponseTime({answers, startTime})).toEqual(1.6);
   });
 });
