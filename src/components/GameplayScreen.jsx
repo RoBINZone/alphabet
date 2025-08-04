@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
 import { StatisticsService } from "../services/statistics-service.js";
 import {
   LETTERS,
@@ -69,4 +70,9 @@ export const GameplayScreen = ({ gameState, dispatch }) => {
       </div>
     </>
   );
+};
+
+GameplayScreen.propTypes = {
+  gameState: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };
