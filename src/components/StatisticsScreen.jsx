@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import PropTypes from "prop-types";
 import { StatisticsService } from "../services/statistics-service.js";
 import { SET_SCREEN, WELCOME_SCREEN } from "../consts.js";
 
@@ -44,4 +45,8 @@ export const StatisticsScreen = ({ dispatch }) => {
       </div>
     </div>
   );
+};
+
+StatisticsScreen.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 };
