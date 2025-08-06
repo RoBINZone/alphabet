@@ -68,7 +68,7 @@ button:focus-visible {
 }
 
 .letter {
-  font-size: 100px;
+  font-size: 20vw;
   cursor: pointer;
   transition: all 0.3s ease;
 }
