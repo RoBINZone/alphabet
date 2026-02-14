@@ -12,7 +12,7 @@ export const StatisticsScreen = ({ dispatch }) => {
     <div className="statistics-screen">
       <div> дата / правильно / неправильно / середній час відповіді</div>
       {statistics &&
-        statistics.reverse().map((item, index) => (
+        statistics.toReversed().map((item, index) => (
           <div className="statistics-list-item" key={index}>
             <div className="statistics-list-item-cell datetime">
               {StatisticsService.formatDate(item.datetime)}

@@ -21,7 +21,7 @@ export const GameplayScreen = ({ gameState, dispatch }) => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (gameState?.answers.length >= MAXTURNS) {
+    if (gameState.answers.length >= MAXTURNS) {
       StatisticsService.setStatistic(
         gameState.startTime,
         GameSelectors.getCorrectCount(gameState),
@@ -29,13 +29,20 @@ export const GameplayScreen = ({ gameState, dispatch }) => {
         GameSelectors.getAverageResponseTime(gameState),
       );
       dispatch({ type: SET_SCREEN, screen: STATISTICS_SCREEN });
-    } else {
+    } else if (gameState.answers.length > 0) {
       dispatch({
         type: SET_SELECTED_LETTERS_INDEXES,
         selectedLettersIndexes: GameplayService.get2RandomLetters(),
       });
     }
-  }, [gameState?.answers]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    gameState.answers.length,
+    gameState.startTime,
+    dispatch,
+    gameState.answers, // Included to silence linter about 'answers' usage in setStatistic inputs or just to be safe
+  ]);
+
 
   return (
     <>

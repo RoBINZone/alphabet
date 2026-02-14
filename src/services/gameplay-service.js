@@ -3,9 +3,10 @@ import { StatisticsService } from "./statistics-service.js";
 
 function get2RandomLetters() {
   const randomIndex = Math.floor(Math.random() * LETTERS.length);
-  const randomIndex2 =
-    (randomIndex + 1 + Math.floor(Math.random() * (LETTERS.length - 2))) %
-    LETTERS.length;
+  let randomIndex2 = Math.floor(Math.random() * LETTERS.length);
+  while (randomIndex === randomIndex2) {
+    randomIndex2 = Math.floor(Math.random() * LETTERS.length);
+  }
   return [randomIndex, randomIndex2];
 }
 
