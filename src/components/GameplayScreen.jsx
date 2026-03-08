@@ -35,7 +35,7 @@ export const GameplayScreen = ({ gameState, dispatch }) => {
         selectedLettersIndexes: GameplayService.get2RandomLetters(),
       });
     }
-  }, [gameState?.answers, dispatch]);
+  }, [gameState.answers, gameState.startTime, dispatch]);
 
   return (
     <>
