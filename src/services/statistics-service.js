@@ -13,7 +13,7 @@ function getDateTime() {
 
 function formatDate(timestamp) {
   const date = new Date(timestamp);
-  return date.toLocaleString();
+  return date.toLocaleString("en-US");
 }
 
 function setStatistic(datetime, correct, incorrect, averageResponseTime) {
