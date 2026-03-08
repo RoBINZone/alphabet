@@ -35,14 +35,7 @@ export const GameplayScreen = ({ gameState, dispatch }) => {
         selectedLettersIndexes: GameplayService.get2RandomLetters(),
       });
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    gameState.answers.length,
-    gameState.startTime,
-    dispatch,
-    gameState.answers, // Included to silence linter about 'answers' usage in setStatistic inputs or just to be safe
-  ]);
-
+  }, [gameState.answers, gameState.startTime, dispatch]);
 
   return (
     <>
