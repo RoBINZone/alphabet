@@ -70,8 +70,22 @@ button:focus-visible {
 .letter {
   font-size: 20vw;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: transform 0.15s ease, color 0.15s ease, background-color 0.15s ease;
   user-select: none;
+  border-radius: 16px;
+  padding: 0 2vw;
+}
+
+.letter:hover {
+  color: #646cff;
+  transform: scale(1.1);
+  background-color: rgba(100, 108, 255, 0.1);
+}
+
+.letter:active {
+  color: #535bf2;
+  transform: scale(0.92);
+  background-color: rgba(100, 108, 255, 0.22);
 }
 
 .container {
