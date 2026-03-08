@@ -1,126 +1,78 @@
-import React, { useState, useEffect } from "react";
-import { getDateTime, setStatistic } from "../services/statistic-service";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { StatisticsService } from "../services/statistics-service.js";
+import {
+  LETTERS,
+  MAXTURNS,
+  SET_SCREEN,
+  SET_SELECTED_LETTERS_INDEXES,
+  STATISTICS_SCREEN,
+} from "../consts.js";
+import { GameplayService } from "../services/gameplay-service.js";
+import { GameSelectors } from "../selectors/game-selectors.js";
+import { GameActions } from "../actions/game-actions.js";
 
-export const GameplayScreen = ({ startTime, onScreenChange }) => {
-  const [answers, setAnswers] = useState([]);
-  const letters = "АБВГҐДЕЄЖЗИІЇЙКЛМНОПРСТУФХЦЧШЩЬЮЯ";
-  const [selectedLettersIndexes, setSelectedLettersIndexes] = useState([]);
-  const MAXTURNS = 20;
-
-  function get2RandomLetters() {
-    const randomIndex = Math.floor(Math.random() * letters.length);
-    const randomIndex2 =
-      (randomIndex + 1 + Math.floor(Math.random() * (letters.length - 2))) %
-      letters.length;
-    setSelectedLettersIndexes([randomIndex, randomIndex2]);
-  }
-
-  function endGame() {
-    setStatistic(
-      startTime,
-      getCorrectCount(),
-      getIncorrectCount(),
-      getAverageResponseTime(),
-    );
-    onScreenChange("STATISTICS");
-  }
-
-  async function checkAnswer(clickedLetterIndex) {
-    const datetime = getDateTime();
-    let newAnswers;
-    if (
-      clickedLetterIndex === 0 &&
-      selectedLettersIndexes[0] <= selectedLettersIndexes[1]
-    ) {
-      newAnswers = [
-        ...answers,
-        {
-          correct: true,
-          datetime,
-        },
-      ];
-    } else if (
-      clickedLetterIndex === 1 &&
-      selectedLettersIndexes[0] >= selectedLettersIndexes[1]
-    ) {
-      newAnswers = [
-        ...answers,
-        {
-          correct: true,
-          datetime,
-        },
-      ];
-    } else {
-      newAnswers = [
-        ...answers,
-        {
-          correct: false,
-          datetime,
-        },
-      ];
-    }
-
-    setAnswers(newAnswers);
-  }
-
-  function getCorrectCount() {
-    return answers?.filter((item) => item.correct)?.length ?? 0;
-  }
-
-  function getIncorrectCount() {
-    return answers?.filter((item) => !item.correct)?.length ?? 0;
-  }
-
-  function getAverageResponseTime() {
-    const diffs = [];
-    if (answers.length > 1) {
-      for (let i = 0; i < answers.length - 1; i++) {
-        diffs.push(
-          answers[i].datetime - (i === 0 ? startTime : answers[i - 1].datetime),
-        );
-      }
-    }
-
-    const avg =
-      diffs.length > 0
-        ? diffs.reduce((el, acc) => acc + el, 0) / diffs.length
-        : 0;
-
-    return Math.floor(avg / 10) / 100;
-  }
+export const GameplayScreen = ({ gameState, dispatch }) => {
+  useEffect(() => {
+    dispatch({
+      type: SET_SELECTED_LETTERS_INDEXES,
+      selectedLettersIndexes: GameplayService.get2RandomLetters(),
+    });
+  }, [dispatch]);
 
   useEffect(() => {
-    get2RandomLetters();
-  }, []);
-
-  useEffect(() => {
-    if (answers.length >= MAXTURNS) {
-      endGame();
-    } else {
-      get2RandomLetters();
+    if (gameState.answers.length >= MAXTURNS) {
+      StatisticsService.setStatistic(
+        gameState.startTime,
+        GameSelectors.getCorrectCount(gameState),
+        GameSelectors.getIncorrectCount(gameState),
+        GameSelectors.getAverageResponseTime(gameState),
+      );
+      dispatch({ type: SET_SCREEN, screen: STATISTICS_SCREEN });
+    } else if (gameState.answers.length > 0) {
+      dispatch({
+        type: SET_SELECTED_LETTERS_INDEXES,
+        selectedLettersIndexes: GameplayService.get2RandomLetters(),
+      });
     }
-  }, [answers]);
+  }, [gameState.answers, gameState.startTime, dispatch]);
 
   return (
     <>
       <div className="counter">
         <div>
-          <div className="correct">Правильно: {getCorrectCount()}</div>
-          <div className="incorrect">Неправильно: {getIncorrectCount()}</div>
+          <div className="correct">
+            Правильно: {GameSelectors.getCorrectCount(gameState)}
+          </div>
+          <div className="incorrect">
+            Неправильно: {GameSelectors.getIncorrectCount(gameState)}
+          </div>
           <div className="average-response-time">
-            Середній час відповіді: {getAverageResponseTime()}c
+            Середній час відповіді:{" "}
+            {GameSelectors.getAverageResponseTime(gameState)}c
           </div>
         </div>
       </div>
       <div>Яка з цих літер іде першою в алфавіті?</div>
       <div className="container">
-        <div className="letter" onClick={() => checkAnswer(0)}>
-          {letters[selectedLettersIndexes[0]]}
+        <div
+          className="letter"
+          onClick={() => dispatch(GameActions.addAnswer(gameState, 0))}
+        >
+          {LETTERS[gameState.selectedLettersIndexes[0]]}
         </div>
-        <div className="letter" onClick={() => checkAnswer(1)}>
-          {letters[selectedLettersIndexes[1]]}
+        <div
+          className="letter"
+          onClick={() => dispatch(GameActions.addAnswer(gameState, 1))}
+        >
+          {LETTERS[gameState.selectedLettersIndexes[1]]}
         </div>
       </div>
     </>
   );
+};
+
+GameplayScreen.propTypes = {
+  gameState: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };

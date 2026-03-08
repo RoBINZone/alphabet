@@ -1,6 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+import { GameActions } from "../actions/game-actions.js";
 
-export const WelcomeScreen = ({ onStart }) => {
+export const WelcomeScreen = ({ onStart, dispatch }) => {
+  useEffect(() => {
+    dispatch(GameActions.clearGame());
+  }, [dispatch]);
   return (
     <div>
       <p>
@@ -10,4 +15,9 @@ export const WelcomeScreen = ({ onStart }) => {
       <button onClick={() => onStart()}>Почати гру</button>
     </div>
   );
+};
+
+WelcomeScreen.propTypes = {
+  onStart: PropTypes.func.isRequired,
+  dispatch: PropTypes.func.isRequired,
 };

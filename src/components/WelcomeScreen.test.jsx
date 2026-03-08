@@ -1,13 +1,12 @@
 import React from "react";
 import { render } from "@testing-library/react";
 import { expect, it, describe } from "vitest";
-import { GameplayScreen } from "./GameplayScreen";
-import { initialState } from "../reducers/game-reducer.js";
+import { WelcomeScreen } from "./WelcomeScreen.jsx";
 
-describe("Gameplay", () => {
+describe("Welcome Screen", () => {
   it("should match snapshot", () => {
     const { asFragment } = render(
-      <GameplayScreen gameState={initialState} dispatch={() => undefined} />,
+      <WelcomeScreen onStart={() => undefined} dispatch={() => undefined} />,
     );
     expect(asFragment()).toMatchSnapshot();
   });

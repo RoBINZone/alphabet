@@ -1,22 +1,21 @@
-import { useState } from "react";
-import { clearStatistics, getStatistic } from "../services/statistic-service";
+import React, { useState } from "react";
+import PropTypes from "prop-types";
+import { StatisticsService } from "../services/statistics-service.js";
+import { SET_SCREEN, WELCOME_SCREEN } from "../consts.js";
 
-export const StatisticsScreen = ({ onScreenChange }) => {
-  const [statistic, setStatistics] = useState(getStatistic());
-
-  function formatDate(timestamp) {
-    const date = new Date(timestamp);
-    return date.toLocaleString();
-  }
+export const StatisticsScreen = ({ dispatch }) => {
+  const [statistics, setStatistics] = useState(
+    StatisticsService.getStatistic(),
+  );
 
   return (
     <div className="statistics-screen">
       <div> дата / правильно / неправильно / середній час відповіді</div>
-      {statistic &&
-        statistic.reverse().map((item, index) => (
+      {statistics &&
+        statistics.toReversed().map((item, index) => (
           <div className="statistics-list-item" key={index}>
             <div className="statistics-list-item-cell datetime">
-              {formatDate(item.datetime)}
+              {StatisticsService.formatDate(item.datetime)}
             </div>
             <div className="statistics-list-item-cell correct">
               {item.correct}
@@ -30,10 +29,14 @@ export const StatisticsScreen = ({ onScreenChange }) => {
           </div>
         ))}
       <div>
-        <button onClick={() => onScreenChange("WELCOME")}>На початок</button>
+        <button
+          onClick={() => dispatch({ type: SET_SCREEN, screen: WELCOME_SCREEN })}
+        >
+          На початок
+        </button>
         <button
           onClick={() => {
-            clearStatistics();
+            StatisticsService.clearStatistics();
             setStatistics([]);
           }}
         >
@@ -42,4 +45,8 @@ export const StatisticsScreen = ({ onScreenChange }) => {
       </div>
     </div>
   );
+};
+
+StatisticsScreen.propTypes = {
+  dispatch: PropTypes.func.isRequired,
 };
