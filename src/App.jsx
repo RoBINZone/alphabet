@@ -1,4 +1,4 @@
-import React, { useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { WelcomeScreen } from "./components/WelcomeScreen";
 import { GameplayScreen } from "./components/GameplayScreen";
 import "./App.css";
@@ -15,9 +15,14 @@ import {
 } from "./consts.js";
 import { StatisticsService } from "./services/statistics-service.js";
 import { GameplayService } from "./services/gameplay-service.js";
+import { ThemeToggle } from "./components/ThemeToggle.jsx";
 
 function App() {
   const [gameState, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-theme", gameState.theme);
+  }, [gameState.theme]);
 
   const onStart = () => {
     dispatch({
@@ -44,7 +49,12 @@ function App() {
     [STATISTICS_SCREEN]: () => <StatisticsScreen dispatch={dispatch} />,
   };
 
-  return (screens[gameState.screen] && screens[gameState.screen]()) ?? null;
+  return (
+    <>
+      <ThemeToggle theme={gameState.theme} dispatch={dispatch} />
+      {(screens[gameState.screen] && screens[gameState.screen]()) ?? null}
+    </>
+  );
 }
 
 export default App;
