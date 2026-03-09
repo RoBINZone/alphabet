@@ -74,6 +74,8 @@ button:focus-visible {
   user-select: none;
   border-radius: 16px;
   padding: 0 2vw;
+  -webkit-tap-highlight-color: transparent;
+  outline: none;
 }
 
 .letter:hover {
