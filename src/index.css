@@ -83,7 +83,7 @@ button:focus-visible {
 }
 
 .letter:active {
-  color: #535bf2;
+  color: #5c64fa;
   transform: scale(0.92);
   background-color: rgba(100, 108, 255, 0.22);
 }
